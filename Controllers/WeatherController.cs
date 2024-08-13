@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Principal;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ClimaTempo.Controllers
@@ -94,10 +97,31 @@ namespace ClimaTempo.Controllers
             var response = await httpClient.GetAsync(url);
 
             var data = await response.Content.ReadAsStringAsync();
+            //var value = JsonConvert.DeserializeObject(data);
+            JObject value = JObject.Parse(data);
+            string by = (string)value["by"];
+
+            return Ok(value);
+        }
+
+
+        [HttpGet("escolhaCidadePesquisaPersonalizada")]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ClimaCidadeSP(string nomeCidade, string UF)
+        {
+            var httpClient = new HttpClient();
+            //Busca da previsão do tempo para a cidade "nomeCidade" do estado "UF"
+            var url = "https://api.hgbrasil.com/weather?array_limit=5&fields=only_results,temp,city_name,forecast,max,min,date,condition&key=cefd468d";
+            var response = await httpClient.GetAsync(url);
+
+            var data = await response.Content.ReadAsStringAsync();
+            //var value = JsonConvert.DeserializeObject(data);
+            JObject value = JObject.Parse(data);
+            string by = (string)value["by"];
 
             return Ok(data);
         }
-
 
     }
 }
