@@ -16,6 +16,7 @@ namespace ClimaTempo.Controllers
         [HttpGet("testeAPI")]
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> TestAPI()
         {
             var httpClient = new HttpClient();
@@ -24,7 +25,13 @@ namespace ClimaTempo.Controllers
             var response = await httpClient.GetAsync(url);
 
             var data = await response.Content.ReadAsStringAsync();
+            JObject value = JObject.Parse(data);
+            string error = (string)value["error"];
 
+            if (error == "True")
+            {
+                throw new Exception("Por favor, entre em contato com o Suporte");
+            }
             return Ok(data);
         }
 
@@ -44,6 +51,7 @@ namespace ClimaTempo.Controllers
         [HttpGet("Campinas,SP")]
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> ClimaSaoPaulo()
         {
             var httpClient = new HttpClient();
@@ -52,13 +60,20 @@ namespace ClimaTempo.Controllers
             var response = await httpClient.GetAsync(url);
 
             var data = await response.Content.ReadAsStringAsync();
-
+            JObject value = JObject.Parse(data);
+            string error = (string)value["error"];
+            
+            if (error == "True")
+            {
+                throw new Exception("Por favor, entre em contato com o Suporte") ;
+            }
             return Ok(data);
         }
 
         [HttpGet("Macapá,AP")]
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> ClimaMacapá()
         {
             var httpClient = new HttpClient();
@@ -67,13 +82,20 @@ namespace ClimaTempo.Controllers
             var response = await httpClient.GetAsync(url);
 
             var data = await response.Content.ReadAsStringAsync();
+            JObject value = JObject.Parse(data);
+            string error = (string)value["error"];
 
+            if (error == "True")
+            {
+                throw new Exception("Por favor, entre em contato com o Suporte");
+            }
             return Ok(data);
         }
 
         [HttpGet("BeloHorizonte,MG")]
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> ClimaBeloHoriznte()
         {
             var httpClient = new HttpClient();
@@ -82,13 +104,20 @@ namespace ClimaTempo.Controllers
             var response = await httpClient.GetAsync(url);
 
             var data = await response.Content.ReadAsStringAsync();
+            JObject value = JObject.Parse(data);
+            string error = (string)value["error"];
 
+            if (error == "True")
+            {
+                throw new Exception("Por favor, entre em contato com o Suporte");
+            }
             return Ok(data);
         }
 
         [HttpGet("escolhaCidade")]
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> ClimaCidade(string nomeCidade,string UF)
         {
             var httpClient = new HttpClient();
@@ -97,17 +126,23 @@ namespace ClimaTempo.Controllers
             var response = await httpClient.GetAsync(url);
 
             var data = await response.Content.ReadAsStringAsync();
-            //var value = JsonConvert.DeserializeObject(data);
             JObject value = JObject.Parse(data);
+            string error = (string)value["error"];
+
+            if (error == "True")
+            {
+                throw new Exception("Por favor, entre em contato com o Suporte");
+            }
             string by = (string)value["by"];
 
-            return Ok(value);
+            return Ok(data);
         }
 
 
         [HttpGet("escolhaCidadePesquisaPersonalizada")]
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> ClimaCidadeSP(string nomeCidade, string UF)
         {
             var httpClient = new HttpClient();
@@ -116,8 +151,13 @@ namespace ClimaTempo.Controllers
             var response = await httpClient.GetAsync(url);
 
             var data = await response.Content.ReadAsStringAsync();
-            //var value = JsonConvert.DeserializeObject(data);
             JObject value = JObject.Parse(data);
+            string error = (string)value["error"];
+
+            if (error == "True")
+            {
+                throw new Exception("Por favor, entre em contato com o Suporte");
+            }
             string by = (string)value["by"];
 
             return Ok(data);
