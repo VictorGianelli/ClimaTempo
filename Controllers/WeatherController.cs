@@ -18,104 +18,155 @@ namespace ClimaTempo.Controllers
         [HttpGet("testeAPI")]
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> TestAPI()
         {
-            //Busca da previsão do tempo para woeid=455912/São José dos Campos
-            var url = "https://api.hgbrasil.com/weather?key=cefd468d";
-            var data = await CondicaoClima(url);
+            try
+            {
+                //Busca da previsão do tempo para woeid=455912/São José dos Campos
+                var url = "https://api.hgbrasil.com/weather?key=cefd468d";
+                var data = await CondicaoClima(url);
 
-            return Ok(data);
-        }
-
-        public static async Task Get(string data)
-        {
-            var httpClient = new HttpClient();
-            //var json = new HttpClient().GetAsync(url);
-
-            var url = "https://api.hgbrasil.com/weather?woeid=455912"+".json";
-
-            var response = await httpClient.GetAsync(url);
-
-            data = await response.Content.ReadAsStringAsync();
-
-        }
-
-        [HttpPost()]
-        [ProducesResponseType(typeof(Value), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(Value), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> ClimaTeste([FromBody] Value request)
-        {
-            var url = "https://api.hgbrasil.com/weather?key=cefd468d&city_name=Campinas,SP";
-            var data = await CondicaoClima(url);
-
-            return Ok(data);
+                return Ok(data);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch 
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Unkown error");
+            }
         }
 
 
         [HttpGet("Campinas/SP")]
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> ClimaSaoPaulo()
         {
-            //Busca da previsão do tempo para a cidade de Campinas,SP
-            var url = "https://api.hgbrasil.com/weather?key=cefd468d&city_name=Campinas,SP";
-            var data = await CondicaoClima(url);
+            try { 
+                //Busca da previsão do tempo para a cidade de Campinas,SP
+                var url = "https://api.hgbrasil.com/weather?key=cefd468d&city_name=Campinas,SP";
+                var data = await CondicaoClima(url);
 
-            return Ok(data);
+                return Ok(data);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch 
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Unkown error");
+            }
         }
 
         [HttpGet("Macapá/AP")]
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> ClimaMacapá()
         {
-            //Busca da previsão do tempo para a cidade de Macapa,AP
-            var url = "https://api.hgbrasil.com/weather?key=cefd468d&city_name=Macapa,AP";
-            var data = await CondicaoClima(url);
+            try { 
+                //Busca da previsão do tempo para a cidade de Macapa,AP
+                var url = "https://api.hgbrasil.com/weather?key=cefd468d&city_name=Macapa,AP";
+                var data = await CondicaoClima(url);
 
-            return Ok(data);
+                return Ok(data);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch 
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Unkown error");
+            }
         }
 
         [HttpGet("BeloHorizonte/MG")]
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> ClimaBeloHoriznte()
         {
-            //Busca da previsão do tempo para a cidade de BeloHoroiznte,MG
-            var url = "https://api.hgbrasil.com/weather?key=cefd468d&city_name=BeloHorizonte,MG";
-            var data = await CondicaoClima(url);
+            try { 
+                //Busca da previsão do tempo para a cidade de BeloHoroiznte,MG
+                var url = "https://api.hgbrasil.com/weather?key=cefd468d&city_name=BeloHorizonte,MG";
+                var data = await CondicaoClima(url);
 
-            return Ok(data);
+                return Ok(data);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch 
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Unkown error");
+            }
         }
 
         [HttpPost("escolhaCidade")]
         [ProducesResponseType(typeof(EscolhaCidade), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(EscolhaCidade), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> ClimaCidade([FromBody] EscolhaCidade request)
         {
-            //Busca da previsão do tempo para a cidade "nomeCidade" do estado "UF"
-            var url = "https://api.hgbrasil.com/weather?key=cefd468d&city_name="+ request.NomeCidade.Trim() + ","+ request.UF;
-            var data = await CondicaoClima(url);
+            try { 
+                //Busca da previsão do tempo para a cidade "nomeCidade" do estado "UF"
+                var url = "https://api.hgbrasil.com/weather?key=cefd468d&city_name="+ request.NomeCidade.Trim() + ","+ request.UF;
+                var data = await CondicaoClima(url);
             
-            JObject value = JObject.Parse(data);
-            string by = (string)value["by"];
+                JObject value = JObject.Parse(data);
+                string city_name = (string)value["city_name"]; 
 
-            return Ok(data);
+                if (city_name.Trim() != request.NomeCidade.Trim())
+                {
+                    return BadRequest("Verify the input");
+                }
+                return Ok(data);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch 
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Unkown error");
+            }
         }
 
         [HttpPost("escolhaCidadePesquisaPersonalizada")]
         [ProducesResponseType(typeof(EscolhaCidade), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(EscolhaCidade), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> ClimaPersonalizadoCidade([FromBody] EscolhaCidade request)
         {
-            //Busca da previsão do tempo para a cidade "nomeCidade" do estado "UF"
-            var url = "https://api.hgbrasil.com/weather?array_limit=5&fields=only_results,temp,city_name,forecast,max,min,date,condition&key=cefd468d&city_name="+ request.NomeCidade.Trim() + ","+ request.UF;
-            var data = await CondicaoClima(url);
+            try { 
+                //Busca da previsão do tempo para a cidade "nomeCidade" do estado "UF"
+                var url = "https://api.hgbrasil.com/weather?array_limit=5&fields=only_results,temp,city_name,forecast,max,min,date,condition&city_name=" + request.NomeCidade.Trim() + ","+ request.UF;
+                var data = await CondicaoClima(url);
 
-            JObject value = JObject.Parse(data);
-            string by = (string)value["by"];
+                JObject value = JObject.Parse(data);
+                string city_name = (string)value["city_name"];
 
-            return Ok(data);
+                if (city_name.Trim() != request.NomeCidade.Trim())
+                {
+                    return BadRequest("Verify the input");
+                }
+                return Ok(data);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch 
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Unkown error");
+            }
         }
 
         private static async Task<string> CondicaoClima(string url)
@@ -124,6 +175,14 @@ namespace ClimaTempo.Controllers
             var responseHttp = await httpClient.GetAsync(url);
 
             var data = await responseHttp.Content.ReadAsStringAsync();
+
+            JObject value = JObject.Parse(data);
+            string valid_key = (string)value["valid_key"];
+
+            if(valid_key == "False")
+            {
+                throw new ArgumentException("The key isn't valid. Please, call the Tecnical Support");
+            }
             return data;
         }
     }
